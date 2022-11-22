@@ -46,8 +46,10 @@ ventas_por_mes as (
 select 
     ciudad,
     ciudad_cliente,
+    sum(if( year4=2005 and month_number=5, ventas, 0)) as mes_5,
     sum(if( year4=2005 and month_number=6, ventas, 0)) as mes_6,
-    sum(if( year4=2005 and month_number=7, ventas, 0)) as mes_7
+    sum(if( year4=2005 and month_number=7, ventas, 0)) as mes_7,
+    sum(if( year4=2005 and month_number=8, ventas, 0)) as mes_8
 from   
     ventas_por_mes
 group by
@@ -59,10 +61,17 @@ group by
 select 
     ciudad,
     ciudad_cliente,
+    mes_5,
     mes_6,
     mes_7,
-    (mes_7 - mes_6) as diferencia,
-    ((mes_7 - mes_6)/mes_6*100) as pct_inc
+    mes_8,
+    (mes_6 - mes_5) as dif_mes6_mes5,
+    (mes_7 - mes_6) as dif_mes7_mes6,
+    (mes_8 - mes_7) as dif_mes8_mes7,
+
+    ((mes_6 - mes_5)/mes_5*100) as pct_meses_6_5,
+    ((mes_7 - mes_6)/mes_6*100) as pct_meses_7_6,
+    ((mes_8 - mes_7)/mes_7*100) as pct_meses_8_7
 from    
     ventas_por_mes_pivote
 limit 10
